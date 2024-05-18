@@ -1,8 +1,8 @@
 import json
 import os
 
-from data import stats
-from data.team import Team
+from old.data import stats
+from old.data.team import Team
 
 print(os.listdir())
 all_players = stats.load_player_file()
@@ -10,7 +10,7 @@ all_teams = dict()
 
 
 def load_teams():
-    for team_file in os.listdir('../game/saves/teams/'):
+    for team_file in os.listdir('saves/teams/'):
         if team_file == '.DS_Store':
             continue
         with open('../game/saves/teams/' + team_file) as f:

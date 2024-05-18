@@ -1,5 +1,4 @@
 import json
-
 import numpy as np
 
 
@@ -16,7 +15,7 @@ class Stadium:
             self.wind_speed = max(0, np.random.normal(5, 2, 1)[0])
             self.field_distances = [np.random.normal(335, 5, 1)[0], np.random.normal(400, 3.333, 1)[0], np.random.normal(335, 5, 1)[0]] # LCR
 
-    def from_json(self, data):
+    def from_json(self, data) -> None:
         self.name = data['name']
         self.state = data['state']
         self.fan_capacity = data['fan_capacity']
@@ -24,12 +23,12 @@ class Stadium:
         self.wind_speed = data['wind_speed']
         self.field_distances = [data['field_distances']['left'], data['field_distances']['center'], data['field_distances']['right']]
 
-    def generate_stadium_name(self, names):
+    def generate_stadium_name(self, names) -> str:
         possible_suffixes = ['Stadium', 'Park', 'Arena', 'Field', 'Coliseum', 'Center']
         suffix_probability = [0.3, 0.3, 0.04, 0.3, 0.03, 0.03]
         return np.random.choice(names, 1)[0] + " " + np.random.choice(possible_suffixes, 1, p=suffix_probability)[0]
 
-    def to_json(self):
+    def to_json(self) -> str:
         dictionary = {
             "name": self.name,
             "state": self.state,

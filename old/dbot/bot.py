@@ -1,12 +1,9 @@
 import datetime
 import random
 import asyncio
-from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime as dt
 
-import pytz
 from pytz import timezone
-import json
 import os
 import us
 
@@ -15,11 +12,11 @@ from discord.ext import commands, tasks
 from tabulate import tabulate
 from wonderwords import RandomWord
 
-from data import stats
-from data.player import Player
-from data.stats import *
-from data.team import Team, get_position_by_number, get_position_by_name
-from game.game import Game
+from old.data import stats
+from old.data.player import Player
+from old.data.stats import *
+from old.data.team import Team, get_position_by_number, get_position_by_name
+from old.game.game import Game
 
 est = timezone('US/Eastern')
 

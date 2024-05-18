@@ -1,4 +1,3 @@
-import asyncio
 import random
 import time
 from enum import Enum, IntEnum
@@ -6,9 +5,9 @@ from enum import Enum, IntEnum
 import numpy as np
 from tabulate import tabulate
 
-from data.player import Player
-from data.stadium import Stadium
-from data.stats import l2, l3
+from old.data.player import Player
+from old.data.stadium import Stadium
+from old.data.stats import l2, l3
 
 HOME_TEAM = 1
 AWAY_TEAM = 0

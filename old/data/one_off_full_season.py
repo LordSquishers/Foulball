@@ -1,15 +1,14 @@
 import json
 import os
-import random
 
 import numpy as np
 from tabulate import tabulate
 from wonderwords import RandomWord
 
-from data import stats
-from data.stats import l3
-from data.team import Team
-from game.game import Game
+from old.data import stats
+from old.data.stats import l3
+from old.data.team import Team
+from old.game.game import Game
 
 # make game logic
 NUM_TEAMS = 20
