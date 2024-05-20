@@ -4,13 +4,11 @@ from json import JSONDecodeError
 
 import numpy as np
 import pandas as pd
-from tabulate import tabulate
 from wonderwords import RandomWord
 from pluralizer import Pluralizer
 
 from data.player import PLAYER_DATA, Player
 from data.stadium import Stadium
-from data.text_formatting import l1, l2, l3
 
 FIELDING_POSITIONS_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 FIELDING_POSITIONS_TEXT = ['P', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', 'DH']
@@ -85,7 +83,7 @@ class Team:
             except JSONDecodeError as json_error:
                 print('Unable to load team JSON data. Is this a valid JSON format?')
                 print(json_error)
-                print('Bad team data loaded. Exiting to preserve game.')
+                print('Bad team data loaded. Exiting to preserve simulation.')
                 exit(1)
         else:
             self.generate_from_scratch()
@@ -102,50 +100,9 @@ class Team:
             plus_minus = '+'
         return self.name + ' (' + str(self.stats.wins) + 'W/' + str(self.stats.losses) + 'L/' + plus_minus + str(run_diff) + ' RD)'
 
-    def print_lineup(self) -> None:
-        """
-        TODO- move to display class.
-        Prints the game lineup (formatted) to the console.
-        """
-        print("The " + self.name + " (" + self.state + ")")
-        for player in self.game_lineup.values():
-            player = self.get_player_by_name(player)
-            print(get_position_by_number(player.position) + ": #" + str(player.jersey_number) + " " + player.full_name)
-
-    def print_full_roster_stats(self) -> None:
-        """
-        TODO- move to display class.
-        Prints the full forty-man roster as a formatted console output.
-        """
-        print(self.__repr__() + ' Stats')
-        pitching_headers = ['#', 'Pitcher', 'Games', 'IP', 'ERA', 'HRs', 'K/BB', 'WHIP', 'Pitches/Game']
-        pitching_stats = list()
-        pitching_stats.append(pitching_headers)
-        for pitcher in self.forty_man_roster:
-            if pitcher.position != get_position_by_name('P') or pitcher.position == 0:
-                continue
-            p_stats = pitcher.pitching
-            pitching_stats.append(
-                [pitcher.jersey_number, pitcher.full_name, p_stats.games_pitched_in, p_stats.innings_pitched, l2(p_stats.era()), p_stats.home_runs_allowed,
-                 p_stats.k_bb_str(), l2(p_stats.whip()), int(p_stats.pitches_per_game())])
-        print(tabulate(pitching_stats))
-        print()
-        player_headers = ['#', 'Pos.', 'Player', '.AVG', 'HR', 'RBIs', 'OPS', '1B', 'xBH', 'BBs', 'SOs', 'PAs', 'Avg. EV', 'Games', 'Errors']
-        player_table = list()
-        player_table.append(player_headers)
-        for player in self.forty_man_roster:
-            if player.position == get_position_by_name('P') or player.position == 0:
-                continue
-            ps = player.batting
-            fs = player.fielding
-            player_table.append(
-                [player.jersey_number, get_position_by_number(player.position), player.full_name, l3(ps.b_avg()), ps.home_runs, ps.runs_batted_in, l3(ps.ops()),
-                 ps.singles, ps.xbh(), ps.walks, ps.strikeouts, ps.plate_appearances, l1(ps.avg_ev()), ps.games_played, fs.errors])
-        print(tabulate(player_table))
-
     def get_player_at_field_position_in_lineup(self, field_position) -> Player:
         """
-        Finds the player at the specified field position in the game lineup.
+        Finds the player at the specified field position in the simulation lineup.
         :param field_position: Position as text or number.
         :return: Player data for the specified position (from lineup)
         """
@@ -249,7 +206,7 @@ class Team:
 
     def update_lineup(self) -> None:
         """
-        Using the team strategy, updates the lineup for the next game.
+        Using the team strategy, updates the lineup for the next simulation.
         """
         # possible there is no lineup yet, so check and randomly select if so.
         for pos_name in FIELDING_POSITIONS_TEXT:
@@ -452,7 +409,7 @@ class Team:
         self.division = ''
 
         # management and strategy
-        self.strategy = random.choice([0, 1, 2])  # 0 is 5 game trial, 1 is replace if below avg, 2 is randomize if losing
+        self.strategy = random.choice([0, 1, 2])  # 0 is 5 simulation trial, 1 is replace if below avg, 2 is randomize if losing
 
     def from_json(self, json_data) -> None:
         """
@@ -497,7 +454,7 @@ def save_team_file(team: Team) -> None:
     :param team: Team object
     """
     team_file_name = team.name.replace(" ", "_") + '.json'
-    with open('../game/saves/teams/' + team_file_name, 'w') as outfile:
+    with open('../simulation/saves/teams/' + team_file_name, 'w') as outfile:
         json.dump(team.to_json(), outfile)
 
 
@@ -507,7 +464,7 @@ def load_team_file(team_file_name) -> Team:
     :param team_file_name: TEAMNAME.json
     :return: Team object.
     """
-    with open('../game/saves/teams/' + team_file_name) as f:
+    with open('../simulation/saves/teams/' + team_file_name) as f:
         return Team(json_str=f.read())
 
 

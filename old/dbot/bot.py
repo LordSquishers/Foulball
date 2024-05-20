@@ -117,7 +117,7 @@ async def post_season_handling():
 def save_season():
     # clear saves #
     for file_name in os.listdir('../game/saves/teams/'):
-        os.remove('../game/saves/teams/' + file_name)
+        os.remove('../simulation/saves/teams/' + file_name)
     if 'players.json' in os.listdir('../game/saves/'):
         os.remove('../game/saves/players.json')
     # save team stats #
@@ -164,12 +164,12 @@ async def display_games(list_of_games: list):
     game_tasks = list()
 
     for game in list_of_games:
-        # create channel per game
+        # create channel per simulation
         # ideally print games simultaneously
         game_name = game.away_team.short_name + '-' + game.home_team.short_name
         game_chnl = await live_games_cat.create_text_channel(game_name)
         team_chnls = [TEAM_CHANNEL_DICT[game.away_team.name.lower().replace(' ', '').replace('-', '')], TEAM_CHANNEL_DICT[game.home_team.name.lower().replace(' ', '').replace('-', '')]]
-        print('creating game ' + game_name)
+        print('creating simulation ' + game_name)
         game_tasks.append(asyncio.create_task(game.play_game_discord(game_chnl, team_chnls)))
     for task in game_tasks:
         await task
@@ -326,7 +326,7 @@ async def on_ready():
     for team_file in os.listdir('../game/saves/teams/'):
         if team_file == '.DS_Store':
             continue
-        with open('../game/saves/teams/' + team_file) as f:
+        with open('../simulation/saves/teams/' + team_file) as f:
             td = json.load(f)
             loaded_team = Team(td, all_players)
             all_teams[loaded_team.name.lower().replace(' ', '').replace('-', '')] = loaded_team
@@ -430,7 +430,7 @@ async def league_leaderboard(ctx):
     await send_league_leaderboard(ctx)
 
 
-@bot.command(name='schedule', description='Shows the game schedule for the next week.')
+@bot.command(name='schedule', description='Shows the simulation schedule for the next week.')
 async def show_schedule(ctx):
     idx = 0
     for games in games_for_day:

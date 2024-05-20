@@ -10,7 +10,7 @@ from old.data.stats import l3
 from old.data.team import Team
 from old.game.game import Game
 
-# make game logic
+# make simulation logic
 NUM_TEAMS = 20
 NUM_DIVISIONS = 4
 NUM_DIVISION_WINNERS = 1

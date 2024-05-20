@@ -13,7 +13,7 @@ def load_teams():
     for team_file in os.listdir('saves/teams/'):
         if team_file == '.DS_Store':
             continue
-        with open('../game/saves/teams/' + team_file) as f:
+        with open('../simulation/saves/teams/' + team_file) as f:
             team_data = json.load(f)
             loaded_team = Team(team_data, all_players)
             all_teams[loaded_team.name] = loaded_team

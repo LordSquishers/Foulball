@@ -25,3 +25,16 @@ def l3(number) -> str:
     if output == '':
         return '0'
     return output
+
+
+def convert_inning_id_to_string(inning_id: int) -> str:
+    """
+    Converts the half inning to text.
+    0 -> 'Top 1', 17 -> 'Bottom 9'
+    """
+    half = 'Top '
+    if inning_id % 2 == 1:
+        half = 'Bottom '
+
+    inning = int(inning_id / 2) + 1
+    return half + str(inning)

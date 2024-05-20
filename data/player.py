@@ -33,7 +33,7 @@ class Player:
             except JSONDecodeError as json_error:
                 print('Unable to load player JSON data. Is this in a valid JSON format?')
                 print(json_error)
-                print('Bad player data loaded. Exiting to preserve integrity of game. ')
+                print('Bad player data loaded. Exiting to preserve integrity of simulation. ')
                 exit(1)
         else:
             self.generate_from_scratch()  # generate new player data
